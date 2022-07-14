@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Dynamic Feature Demo</string>
+    <string name="title_oninstall">On Install</string>
+    <string name="title_ondemand">OnDemand</string>
+    <string name="title_activity_on_install">OnInstallActivity</string>
+    <string name="title_activity_on_demand">OnDemandActivity</string>
 </resources>
