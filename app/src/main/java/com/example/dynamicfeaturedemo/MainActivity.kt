@@ -50,47 +50,88 @@ class MainActivity : ComponentActivity() {
                         Button(onClick = {
                             val splitInstallRequest = SplitInstallRequest.newBuilder().addModule("OnDemand").build()
 
-                            val listener = SplitInstallStateUpdatedListener { state: SplitInstallSessionState ->
-                                    if (state.sessionId() == sessionId) {
-                                        when (state.status()) {
-                                            SplitInstallSessionStatus.DOWNLOADING -> {
-                                                progressBarVisibility = true
+//                            val listener = SplitInstallStateUpdatedListener { state: SplitInstallSessionState ->
+//                                    if (state.sessionId() == sessionId) {
+//                                        when (state.status()) {
+//                                            SplitInstallSessionStatus.DOWNLOADING -> {
+//                                                progressBarVisibility = true
+//                                            }
+//                                            SplitInstallSessionStatus.INSTALLED -> {
+//                                                progressBarVisibility = false
+//                                                val intent = Intent().also {
+//                                                    it.setClassName(this@MainActivity,"com.example.ondemand.OnDemandActivity")
+//                                                }
+//                                                startActivity(intent)
+//                                            }
+//                                            SplitInstallSessionStatus.CANCELED -> {
+//                                                Log.i("listener","CANCELLED")
+//                                            }
+//                                            SplitInstallSessionStatus.CANCELING -> {
+//                                                progressBarVisibility = true
+//                                            }
+//                                            SplitInstallSessionStatus.DOWNLOADED -> {
+//                                                Log.i("listener","DOWNLOADED")
+//                                            }
+//                                            SplitInstallSessionStatus.FAILED -> {
+//                                                Log.i("listener","FAILED")
+//                                            }
+//                                            SplitInstallSessionStatus.INSTALLING -> {
+//                                                progressBarVisibility = true
+//                                            }
+//                                            SplitInstallSessionStatus.PENDING -> {
+//                                                Log.i("listener","PENDING")
+//                                            }
+//                                            SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
+//                                                Log.i("listener","REQUIRES_USER_CONFIRMATION")
+//                                            }
+//                                            SplitInstallSessionStatus.UNKNOWN -> {
+//                                                Log.i("listener","UNKNOWN")
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            splitInstallManager.registerListener(listener)
+
+                            splitInstallManager.registerListener {
+                                if (it.sessionId() == sessionId){
+                                    when(it.status()){
+                                        SplitInstallSessionStatus.DOWNLOADING -> {
+                                            progressBarVisibility = true
+                                        }
+                                        SplitInstallSessionStatus.INSTALLED -> {
+                                            progressBarVisibility = false
+                                            val intent = Intent().also {
+                                                it.setClassName(this@MainActivity,"com.example.ondemand.OnDemandActivity")
                                             }
-                                            SplitInstallSessionStatus.INSTALLED -> {
-                                                progressBarVisibility = false
-                                                val intent = Intent().also {
-                                                    it.setClassName(this@MainActivity,"com.example.ondemand.OnDemandActivity")
-                                                }
-                                                startActivity(intent)
-                                            }
-                                            SplitInstallSessionStatus.CANCELED -> {
-                                                Log.i("listener","CANCELLED")
-                                            }
-                                            SplitInstallSessionStatus.CANCELING -> {
-                                                progressBarVisibility = true
-                                            }
-                                            SplitInstallSessionStatus.DOWNLOADED -> {
-                                                Log.i("listener","DOWNLOADED")
-                                            }
-                                            SplitInstallSessionStatus.FAILED -> {
-                                                Log.i("listener","FAILED")
-                                            }
-                                            SplitInstallSessionStatus.INSTALLING -> {
-                                                progressBarVisibility = true
-                                            }
-                                            SplitInstallSessionStatus.PENDING -> {
-                                                Log.i("listener","PENDING")
-                                            }
-                                            SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
-                                                Log.i("listener","REQUIRES_USER_CONFIRMATION")
-                                            }
-                                            SplitInstallSessionStatus.UNKNOWN -> {
-                                                Log.i("listener","UNKNOWN")
-                                            }
+                                            startActivity(intent)
+                                        }
+                                        SplitInstallSessionStatus.CANCELED -> {
+                                            Log.i("listener","CANCELLED")
+                                        }
+                                        SplitInstallSessionStatus.CANCELING -> {
+                                            progressBarVisibility = true
+                                        }
+                                        SplitInstallSessionStatus.DOWNLOADED -> {
+                                            Log.i("listener","DOWNLOADED")
+                                        }
+                                        SplitInstallSessionStatus.FAILED -> {
+                                            Log.i("listener","FAILED")
+                                        }
+                                        SplitInstallSessionStatus.INSTALLING -> {
+                                            progressBarVisibility = true
+                                        }
+                                        SplitInstallSessionStatus.PENDING -> {
+                                            Log.i("listener","PENDING")
+                                        }
+                                        SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
+                                            Log.i("listener","REQUIRES_USER_CONFIRMATION")
+                                        }
+                                        SplitInstallSessionStatus.UNKNOWN -> {
+                                            Log.i("listener","UNKNOWN")
                                         }
                                     }
                                 }
-                            splitInstallManager.registerListener(listener)
+                            }
                             splitInstallManager.startInstall(splitInstallRequest)
                                 .addOnSuccessListener {
                                     sessionId = it
