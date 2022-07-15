@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,29 +16,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.dynamicfeaturedemo.ui.theme.DynamicFeatureDemoTheme
+import com.example.dynamicfeaturedemo.viewmodel.MainViewModel
 import com.google.android.play.core.splitinstall.*
 import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val splitInstallManager : SplitInstallManager = SplitInstallManagerFactory.create(this)
         var sessionId : Int = 0
+        val viewModel : MainViewModel by viewModels()
         setContent {
             DynamicFeatureDemoTheme {
                 // A surface container using the 'background' color from the theme
                 var progressBarVisibility by remember {
                     mutableStateOf(false)
                 }
+                val count by remember {
+                    viewModel.count
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
                     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        
+                        Text(text = "count $count")
                         Button(onClick = { 
                             val intent = Intent().also {
                                 it.setClassName(this@MainActivity,"com.example.oninstall.OnInstallActivity")
